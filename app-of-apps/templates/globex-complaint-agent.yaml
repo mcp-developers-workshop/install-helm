@@ -28,7 +28,7 @@ spec:
       - CreateNamespace=true
       - RespectIgnoreDifferences=true
   source:
-    repoURL: {{ .Values.globexComplaintAgent.source.repoUrl }}
+    repoURL: {{ tpl .Values.globexComplaintAgent.source.repoUrl . }}
     targetRevision: {{ .Values.globexComplaintAgent.source.targetRevision }}
     path: {{ .Values.globexComplaintAgent.source.path }}
     helm:

@@ -9,10 +9,6 @@ data:
     ---
     - name: Configure GitLab
       hosts: localhost
-      vars:
-        gitlab_namespace: {{ $.Release.Namespace }}
-        root_password: {{ $.Values.gitlab.rootPassword }}
-        user_create: true
       tasks:
         - name: Check GitLab Liveness
           ansible.builtin.uri:
@@ -71,12 +67,10 @@ data:
             dest: /tmp/{{ $item.project }}/{{ $item1 }}
             mode: "0660"         
           vars:
-            gitlab_host: "{{ $.Values.gitlab.host }}"
-            cluster_subdomain: "{{ $.Values.cluster.subdomain }}"
-            rhdh_gitops_namespace: "{{ $.Values.gitops.namespace }}"
-            rhdh_gitops_project: "{{ $.Values.gitops.project }}"
-            quay_host: "{{ $.Values.quay.host }}"
-            orchestrator_namespace: "{{ $.Values.orchestrator.namespace }}"
+            oidc_auth_server_url: "{{ $.Values.templates.vars.oidc.authServerUrl }}"
+            oidc_realm: "{{ $.Values.templates.vars.oidc.realm }}"
+            oidc_client_id:  "{{ $.Values.templates.vars.oidc.clientId}}"
+            oidc_client_secret:  "{{ $.Values.templates.vars.oidc.clientSecret }}"
 {{- end }}
 
         - name: Add new files to the repository

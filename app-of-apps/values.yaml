@@ -404,9 +404,9 @@ globexComplaintAgent:
   applicationNamespace: openshift-gitops
   destinationNamespace: globex-complaint-agent
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
+    repoUrl: https://{{ .Values.gitlab.source.helm.values.gitlab.host }}/globex/globex-complaint-agent-helm.git
     targetRevision: main
-    path: globex-complaint-agent
+    path: .
     helm:
       values:
         route:
