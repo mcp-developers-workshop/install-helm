@@ -40,6 +40,7 @@ gitlab:
       project:
         - name: globex-issues
           labels: []
+  templates: []
 postgresql:
   dbUser: gitlab
   dbPassword: passw0rd
