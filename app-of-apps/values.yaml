@@ -423,11 +423,6 @@ globexComplaintAgent:
           realm: globex
           clientId: globex-web-gateway
           clientSecret:
-        llm:
-          complaint:
-            modelName:
-            apiKey:
-            baseUrl:
         cors:
           enabled: true
   argocd:
