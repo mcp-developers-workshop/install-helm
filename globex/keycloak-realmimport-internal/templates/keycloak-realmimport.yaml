@@ -810,7 +810,8 @@ spec:
       nodeReRegistrationTimeout: -1
       defaultClientScopes:
       - service_account
-      - {{ $.Values.clients.mcpService.id }}-scope
+      - {{ $.Values.clients.mcpServer }}-scope
+      - {{ $.Values.clients.mcpService }}-scope
       - basic
       optionalClientScopes:
       - microprofile-jwt
