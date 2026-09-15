@@ -140,7 +140,7 @@ globex:
     syncwave: "3"
 
 noobaa:
-  enabled: true
+  enabled: false
   applicationName: noobaa
   applicationNamespace: openshift-gitops
   destinationNamespace: openshift-storage
@@ -180,7 +180,7 @@ vault:
     syncwave: "1"
 
 quay:
-  enabled: true
+  enabled: false
   applicationName: quay
   applicationNamespace: openshift-gitops
   destinationNamespace: quay
