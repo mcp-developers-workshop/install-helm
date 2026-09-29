@@ -15,8 +15,8 @@ amqstreams:
   applicationNamespace: openshift-gitops
   destinationNamespace: kafka
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
-    targetRevision: main
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
+    targetRevision: gitlab-mcp
     path: amq-streams
     helm:
       values:
@@ -67,8 +67,8 @@ keycloak:
   applicationNamespace: openshift-gitops
   destinationNamespace: keycloak
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
-    targetRevision: main
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
+    targetRevision: gitlab-mcp
     path: keycloak
     helm:
       values:
@@ -88,8 +88,8 @@ globex:
   applicationNamespace: openshift-gitops
   destinationNamespace: globex
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
-    targetRevision: main
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
+    targetRevision: gitlab-mcp
     path: globex
     helm:
       values:
@@ -145,8 +145,8 @@ noobaa:
   applicationNamespace: openshift-gitops
   destinationNamespace: openshift-storage
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
-    targetRevision: main
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
+    targetRevision: gitlab-mcp
     path: noobaa
     helm:
       values:
@@ -163,8 +163,8 @@ vault:
   applicationNamespace: openshift-gitops
   destinationNamespace: vault
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
-    targetRevision: main
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
+    targetRevision: gitlab-mcp
     path: vault
     helm:
       values:
@@ -185,8 +185,8 @@ quay:
   applicationNamespace: openshift-gitops
   destinationNamespace: quay
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
-    targetRevision: main
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
+    targetRevision: gitlab-mcp
     path: quay
     helm:
       values:
@@ -210,8 +210,8 @@ gitlab:
   applicationNamespace: openshift-gitops
   destinationNamespace: gitlab
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
-    targetRevision: main
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
+    targetRevision: gitlab-mcp
     path: gitlab
     helm:
       values:
@@ -234,8 +234,8 @@ pipelines:
   applicationNamespace: openshift-gitops
   destinationNamespace: openshift-operators
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
-    targetRevision: main
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
+    targetRevision: gitlab-mcp
     path: openshift-pipelines
 
   argocd:
@@ -248,8 +248,8 @@ globexStoreMcpBuild:
   applicationNamespace: openshift-gitops
   destinationNamespace: globex-store-mcp-build
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
-    targetRevision: main
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
+    targetRevision: gitlab-mcp
     path: globex-store-mcp-build
     helm:
       values:
@@ -282,8 +282,8 @@ globexStoreMcp:
   applicationNamespace: openshift-gitops
   destinationNamespace: globex-store-mcp
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
-    targetRevision: main
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
+    targetRevision: gitlab-mcp
     path: globex-store-mcp
     helm:
       values:
@@ -306,8 +306,8 @@ globexComplaintsBuild:
   applicationNamespace: openshift-gitops
   destinationNamespace: globex-complaints-build
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
-    targetRevision: main
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
+    targetRevision: gitlab-mcp
     path: globex-complaints-build
     helm:
       values:
@@ -340,8 +340,8 @@ globexComplaints:
   applicationNamespace: openshift-gitops
   destinationNamespace: globex-complaints
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
-    targetRevision: main
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
+    targetRevision: gitlab-mcp
     path: globex-complaints
     helm:
       values:
@@ -370,8 +370,8 @@ globexComplaintAgentBuild:
   applicationNamespace: openshift-gitops
   destinationNamespace: globex-complaint-agent-build
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
-    targetRevision: main
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
+    targetRevision: gitlab-mcp
     path: globex-complaint-agent-build
     helm:
       values:
@@ -405,7 +405,7 @@ globexComplaintAgent:
   destinationNamespace: globex-complaint-agent
   source:
     repoUrl: https://{{ .Values.gitlab.source.helm.values.gitlab.host }}/globex/globex-complaint-agent-helm.git
-    targetRevision: main
+    targetRevision: gitlab-mcp
     path: .
     helm:
       values:
@@ -425,6 +425,33 @@ globexComplaintAgent:
           clientSecret:
         cors:
           enabled: true
+  argocd:
+    enabled: true
+    syncwave: "4"
+
+globexIssuesMcp:
+  enabled: true
+  applicationName: globex-issues-mcp
+  applicationNamespace: openshift-gitops
+  destinationNamespace: globex-issues-mcp
+  source:
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
+    targetRevision: gitlab-mcp
+    path: globex-issues-mcp
+    helm:
+      values:
+        route:
+          host:
+        image:
+          repository: quay.io/mcp_developers_workshop/globex-issues-mcp
+          tag: latest
+          pullPolicy: Always
+        gitlab:
+          url:
+          group: globex
+          project: globex-issues
+          namespace: gitlab
+          tokenSecret: root-user-personal-token
   argocd:
     enabled: true
     syncwave: "4"
