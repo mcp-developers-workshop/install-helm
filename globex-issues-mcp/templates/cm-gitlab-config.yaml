@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gitlab-config-script
+  labels:
+    {{- include "globex-issues-mcp.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "{{ .Values.job.gitlabConfig.argocd.syncwave }}"
+data:
+  playbook.yaml: |
+    - hosts: localhost
+      gather_facts: false
+      vars:
+        gitlab_url: {{ .Values.gitlab.url }}
+        gitlab_group: {{ .Values.gitlab.group }}
+        gitlab_project: {{ .Values.gitlab.project }}
+        source_namespace: {{ .Values.gitlab.namespace }}
+        source_secret: {{ .Values.gitlab.tokenSecret }}
+        target_namespace: {{ .Release.Namespace }}
+        target_secret: {{ include "globex-issues-mcp.name" . }}-gitlab
+      tasks:
+        - name: Read the GitLab root personal access token
+          kubernetes.core.k8s_info:
+            api_version: v1
+            kind: Secret
+            name: '{{ "{{" }} source_secret {{ "}}" }}'
+            namespace: '{{ "{{" }} source_namespace {{ "}}" }}'
+          register: r_root_token
+          retries: 60
+          delay: 10
+          until: r_root_token.resources | default([]) | length > 0
+
+        - name: Decode the token
+          ansible.builtin.set_fact:
+            gitlab_token: '{{ "{{" }} r_root_token.resources[0].data.token | b64decode {{ "}}" }}'
+          no_log: true
+
+        - name: Look up the project
+          ansible.builtin.uri:
+            url: '{{ "{{" }} gitlab_url {{ "}}" }}/api/v4/projects?per_page=100&search={{ "{{" }} gitlab_project {{ "}}" }}'
+            method: GET
+            headers:
+              PRIVATE-TOKEN: '{{ "{{" }} gitlab_token {{ "}}" }}'
+            validate_certs: false
+            status_code: [200]
+          register: r_projects
+          retries: 60
+          delay: 10
+          until:
+            - r_projects.json is defined
+            - r_projects.json | selectattr('path_with_namespace', 'equalto', gitlab_group ~ '/' ~ gitlab_project) | list | length > 0
+
+        - name: Set the project id
+          ansible.builtin.set_fact:
+            gitlab_project_id: '{{ "{{" }} r_projects.json | selectattr("path_with_namespace", "equalto", gitlab_group ~ "/" ~ gitlab_project) | map(attribute="id") | first {{ "}}" }}'
+
+        - name: Report the project id
+          ansible.builtin.debug:
+            msg: '{{ "{{" }} gitlab_group {{ "}}" }}/{{ "{{" }} gitlab_project {{ "}}" }} is project {{ "{{" }} gitlab_project_id {{ "}}" }}'
+
+        - name: Write the GitLab credentials the MCP server reads
+          kubernetes.core.k8s:
+            state: present
+            definition:
+              apiVersion: v1
+              kind: Secret
+              metadata:
+                name: '{{ "{{" }} target_secret {{ "}}" }}'
+                namespace: '{{ "{{" }} target_namespace {{ "}}" }}'
+              type: Opaque
+              stringData:
+                gitlab-token: '{{ "{{" }} gitlab_token {{ "}}" }}'
+                gitlab-project-id: '{{ "{{" }} gitlab_project_id {{ "}}" }}'
+          no_log: true

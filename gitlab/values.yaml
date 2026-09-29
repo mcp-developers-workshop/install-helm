@@ -30,13 +30,15 @@ gitlab:
     - name: globex
       repo:
         - name: globex-store-mcp
-          url: https://github.com/btison/mcp-workshop-globex-store-mcp.git
+          url: https://github.com/mcp-developers-workshop/globex-store-mcp.git
         - name: globex-complaints
-          url: https://github.com/btison/mcp-workshop-globex-complaints.git
+          url: https://github.com/mcp-developers-workshop/globex-complaints.git
         - name: globex-complaint-agent
-          url: https://github.com/btison/mcp-workshop-globex-complaint-agent.git
+          url: https://github.com/mcp-developers-workshop/globex-complaint-agent.git
         - name: globex-complaint-agent-helm
-          url: https://github.com/btison/mcp-workshop-globex-complaint-agent-helm.git
+          url: https://github.com/mcp-developers-workshop/globex-complaint-agent-helm.git
+        - name: globex-complaints-orchestrate
+          url: https://github.com/mcp-developers-workshop/globex-complaints-orchestrate.git
       users:
         - id: developer
       project:

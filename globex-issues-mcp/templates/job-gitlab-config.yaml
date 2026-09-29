@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: gitlab-config
+  labels:
+    {{- include "globex-issues-mcp.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "{{ .Values.job.gitlabConfig.argocd.syncwave }}"
+spec:
+  backoffLimit: 100
+  template:
+    spec:
+      serviceAccountName: gitlab-config
+      securityContext:
+        {{- toYaml .Values.job.gitlabConfig.podSecurityContext | nindent 8 }}
+      containers:
+        - name: gitlab-config
+          securityContext:
+            {{- toYaml .Values.job.gitlabConfig.securityContext | nindent 12 }}
+          image: "{{ .Values.job.gitlabConfig.image.repository }}:{{ .Values.job.gitlabConfig.image.tag }}"
+          imagePullPolicy: {{ .Values.job.gitlabConfig.image.pullPolicy }}
+          command:
+            - /bin/bash
+            - '-c'
+            - |
+              ansible-playbook -i localhost /scripts/playbook.yaml
+          volumeMounts:
+            - mountPath: /scripts
+              name: gitlab-config-script-vol
+      restartPolicy: Never
+      volumes:
+        - name: gitlab-config-script-vol
+          configMap:
+            name: gitlab-config-script

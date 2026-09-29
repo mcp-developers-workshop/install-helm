@@ -1,0 +1,38 @@
+{{/*
+The job has to read the root personal access token out of the gitlab namespace.
+The sibling build charts grant the ClusterRole "edit" there; this one grants a Role
+scoped to that single Secret instead, which is all the job needs.
+*/}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: gitlab-config-{{ .Release.Namespace }}
+  namespace: {{ .Values.gitlab.namespace }}
+  labels:
+    {{- include "globex-issues-mcp.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "{{ .Values.job.gitlabConfig.argocd.syncwave }}"
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    resourceNames: ["{{ .Values.gitlab.tokenSecret }}"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: gitlab-config-{{ .Release.Namespace }}
+  namespace: {{ .Values.gitlab.namespace }}
+  labels:
+    {{- include "globex-issues-mcp.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "{{ .Values.job.gitlabConfig.argocd.syncwave }}"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: gitlab-config-{{ .Release.Namespace }}
+subjects:
+- apiGroup: ""
+  kind: ServiceAccount
+  name: gitlab-config
+  namespace: {{ .Release.Namespace }}
