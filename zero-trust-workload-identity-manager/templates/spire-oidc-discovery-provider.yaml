@@ -1,0 +1,16 @@
+apiVersion: operator.openshift.io/v1alpha1
+kind: SpireOIDCDiscoveryProvider
+metadata:
+  name: cluster
+  labels:
+    {{- include "ztwim.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    {{- include "ztwim-operands.argocd-syncwave" . | nindent 4 }}
+spec:
+  logLevel: info
+  logFormat: text
+  jwtIssuer: {{ include "ztwim.jwtIssuer" . | quote }}
+  csiDriverName: csi.spiffe.io
+  replicaCount: 1
+  managedRoute: "true"

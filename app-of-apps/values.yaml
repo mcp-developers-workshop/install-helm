@@ -15,7 +15,7 @@ amqstreams:
   applicationNamespace: openshift-gitops
   destinationNamespace: kafka
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
     targetRevision: main
     path: amq-streams
     helm:
@@ -67,7 +67,7 @@ keycloak:
   applicationNamespace: openshift-gitops
   destinationNamespace: keycloak
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
     targetRevision: main
     path: keycloak
     helm:
@@ -88,7 +88,7 @@ globex:
   applicationNamespace: openshift-gitops
   destinationNamespace: globex
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
     targetRevision: main
     path: globex
     helm:
@@ -145,7 +145,7 @@ noobaa:
   applicationNamespace: openshift-gitops
   destinationNamespace: openshift-storage
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
     targetRevision: main
     path: noobaa
     helm:
@@ -163,7 +163,7 @@ vault:
   applicationNamespace: openshift-gitops
   destinationNamespace: vault
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
     targetRevision: main
     path: vault
     helm:
@@ -185,7 +185,7 @@ quay:
   applicationNamespace: openshift-gitops
   destinationNamespace: quay
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
     targetRevision: main
     path: quay
     helm:
@@ -210,7 +210,7 @@ gitlab:
   applicationNamespace: openshift-gitops
   destinationNamespace: gitlab
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
     targetRevision: main
     path: gitlab
     helm:
@@ -234,7 +234,7 @@ pipelines:
   applicationNamespace: openshift-gitops
   destinationNamespace: openshift-operators
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
     targetRevision: main
     path: openshift-pipelines
 
@@ -248,7 +248,7 @@ globexStoreMcpBuild:
   applicationNamespace: openshift-gitops
   destinationNamespace: globex-store-mcp-build
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
     targetRevision: main
     path: globex-store-mcp-build
     helm:
@@ -282,7 +282,7 @@ globexStoreMcp:
   applicationNamespace: openshift-gitops
   destinationNamespace: globex-store-mcp
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
     targetRevision: main
     path: globex-store-mcp
     helm:
@@ -306,7 +306,7 @@ globexComplaintsBuild:
   applicationNamespace: openshift-gitops
   destinationNamespace: globex-complaints-build
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
     targetRevision: main
     path: globex-complaints-build
     helm:
@@ -340,7 +340,7 @@ globexComplaints:
   applicationNamespace: openshift-gitops
   destinationNamespace: globex-complaints
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
     targetRevision: main
     path: globex-complaints
     helm:
@@ -370,7 +370,7 @@ globexComplaintAgentBuild:
   applicationNamespace: openshift-gitops
   destinationNamespace: globex-complaint-agent-build
   source:
-    repoUrl: https://github.com/btison/mcp-workshop-install-helm.git
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
     targetRevision: main
     path: globex-complaint-agent-build
     helm:
@@ -428,3 +428,21 @@ globexComplaintAgent:
   argocd:
     enabled: true
     syncwave: "4"
+
+zeroTrustWorkloadIdentityManager:
+  enabled: true
+  applicationName: zero-trust-workload-identity-manager
+  applicationNamespace: openshift-gitops
+  destinationNamespace: zero-trust-workload-identity-manager
+  source:
+    repoUrl: https://github.com/mcp-developers-workshop/install-helm.git
+    targetRevision: main
+    path: zero-trust-workload-identity-manager
+    helm:
+      values:
+        trustDomain: globex.com
+        clusterName: globex-cluster
+        jwtIssuer:
+  argocd:
+    enabled: true
+    syncwave: "1"

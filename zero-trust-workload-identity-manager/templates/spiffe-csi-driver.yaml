@@ -1,0 +1,12 @@
+apiVersion: operator.openshift.io/v1alpha1
+kind: SpiffeCSIDriver
+metadata:
+  name: cluster
+  labels:
+    {{- include "ztwim.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    {{- include "ztwim-operands.argocd-syncwave" . | nindent 4 }}
+spec:
+  agentSocketPath: /run/spire/agent-sockets
+  pluginName: csi.spiffe.io

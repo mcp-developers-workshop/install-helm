@@ -1,0 +1,27 @@
+apiVersion: operator.openshift.io/v1alpha1
+kind: SpireServer
+metadata:
+  name: cluster
+  labels:
+    {{- include "ztwim.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    {{- include "ztwim-operands.argocd-syncwave" . | nindent 4 }}
+spec:
+  logLevel: info
+  logFormat: text
+  jwtIssuer: {{ include "ztwim.jwtIssuer" . | quote }}
+  caValidity: {{ .Values.spireServer.caValidity }}
+  defaultX509Validity: {{ .Values.spireServer.defaultX509Validity }}
+  defaultJWTValidity: {{ .Values.spireServer.defaultJWTValidity }}
+  caKeyType: {{ .Values.spireServer.caKeyType }}
+  caSubject:
+    commonName: {{ .Values.spireServer.caSubject.commonName | quote }}
+    organization: {{ .Values.spireServer.caSubject.organization | quote }}
+    country: {{ .Values.spireServer.caSubject.country | quote }}
+  datastore:
+    databaseType: {{ .Values.spireServer.datastore.databaseType }}
+    connectionString: {{ .Values.spireServer.datastore.connectionString | quote }}
+  persistence:
+    size: {{ .Values.spireServer.persistence.size | quote }}
+    accessMode: {{ .Values.spireServer.persistence.accessMode }}

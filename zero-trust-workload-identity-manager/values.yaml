@@ -1,0 +1,46 @@
+# The operator only supports being installed in this namespace. openshift-* and default
+# are not supported.
+namespace: zero-trust-workload-identity-manager
+
+subscription:
+  channel: stable-v1
+  name: openshift-zero-trust-workload-identity-manager
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  installPlanApproval: Automatic
+
+# The SPIFFE trust domain is baked into every SVID issued in the cluster, so it is a name
+# rather than a hostname.
+trustDomain: globex.com
+clusterName: globex-cluster
+
+# Base URL of the SPIRE OIDC discovery endpoint. The provider manages its own Route, so
+# this has to resolve to a host under the cluster ingress domain. Left empty, the chart
+# builds it from oidcDiscoveryLocalName and the cluster domain.
+jwtIssuer: ""
+oidcDiscoveryLocalName: oidc-discovery
+
+spireServer:
+  caSubject:
+    commonName: Globex
+    organization: Globex
+    country: US
+  caKeyType: ec-p256
+  caValidity: 24h
+  defaultX509Validity: 1h
+  defaultJWTValidity: 5m
+  datastore:
+    databaseType: sqlite3
+    connectionString: /run/spire/data/datastore.sqlite3
+  persistence:
+    size: 2Gi
+    accessMode: ReadWriteOnce
+
+argocd:
+  enabled: true
+  operatorgroup:
+    syncwave: "-3"
+  operator:
+    syncwave: "-2"
+  operands:
+    syncwave: "-1"

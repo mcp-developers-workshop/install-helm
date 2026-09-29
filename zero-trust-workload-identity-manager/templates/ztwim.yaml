@@ -1,0 +1,14 @@
+apiVersion: operator.openshift.io/v1alpha1
+kind: ZeroTrustWorkloadIdentityManager
+metadata:
+  name: cluster
+  labels:
+    {{- include "ztwim.labels" . | nindent 4 }}
+  annotations:
+    # The CRD is installed by the operator, so it does not exist when Argo CD runs its
+    # dry run on the first sync.
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    {{- include "ztwim-operands.argocd-syncwave" . | nindent 4 }}
+spec:
+  trustDomain: {{ .Values.trustDomain | quote }}
+  clusterName: {{ .Values.clusterName | quote }}
