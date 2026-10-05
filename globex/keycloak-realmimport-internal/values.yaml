@@ -41,7 +41,21 @@ clients:
     id:
     secret:
     scope:
+  # The agent's SPIFFE-authenticated client. Authenticates with an SVID issued by SPIRE
+  # instead of a client secret, so the secret below is only a placeholder the realm
+  # import requires. spiffeId must match the workload's SVID exactly.
+  agentSpiffe:
+    id: globex-agent-spiffe
+    secret:
+    spiffeId:
 
+# Adds the SPIFFE identity provider and the federated client to the realm. Disable to
+# get a plain OIDC realm with client-secret authentication only.
+spiffe:
+  enabled: true
+  trustDomain: globex.com
+  bundleEndpoint:
+  providerId: spiffe
 
 groups: []
 
