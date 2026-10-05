@@ -77,6 +77,34 @@ argocd.argoproj.io/sync-wave: "{{ .Values.argocd.syncwave }}"
 {{- end }}
 
 {{/*
+ArgoCD Syncwave for the bootstrap admin Secret
+*/}}
+{{- define "keycloak-admin.argocd-syncwave" -}}
+{{- if .Values.argocd }}
+{{- if and (.Values.argocd.adminSecret) (.Values.argocd.enabled) -}}
+argocd.argoproj.io/sync-wave: "{{ .Values.argocd.adminSecret.syncwave }}"
+{{- else }}
+{{- "{}" }}
+{{- end }}
+{{- else }}
+{{- "{}" }}
+{{- end }}
+{{- end }}
+
+{{/*
+Name of the Secret holding the bootstrap admin credentials.
+Empty when no admin credentials are configured, in which case the operator
+generates its own <keycloak>-initial-admin Secret.
+*/}}
+{{- define "keycloak.adminSecretName" -}}
+{{- if .Values.admin.secret }}
+{{- printf "%s" .Values.admin.secret }}
+{{- else if .Values.admin.password }}
+{{- printf "%s-admin" (include "keycloak.name" .) }}
+{{- end }}
+{{- end }}
+
+{{/*
 Find the name of the OpenShift domain
 */}}
 {{- define "keycloak.ocpDomain" -}}

@@ -13,6 +13,11 @@ route:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
 
+admin:
+  username: admin
+  password: ""
+  secret: ""
+
 database:
   vendor: postgres
   host: keycloak-db
@@ -24,3 +29,10 @@ ingress:
 argocd:
   enabled: true
   syncwave: "-1"
+  adminSecret:
+    syncwave: "-2"
+
+keycloak:
+  admin:
+    username: admin
+    password: admin

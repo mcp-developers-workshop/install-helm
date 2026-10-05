@@ -74,6 +74,9 @@ keycloak:
       values:
         keycloak:
           nameOverride: keycloak
+          admin:
+            username: admin
+            password: adminpassword
           route:
             host:
           ingress:
